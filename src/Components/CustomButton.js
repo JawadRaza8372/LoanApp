@@ -21,14 +21,14 @@ export default CustomButton;
 
 const styles = StyleSheet.create({
   button: {
-    width: "80%",
-    height: h("8%"),
+    width: "95%",
+    height: h("6%"),
     ...allCenter,
-    borderRadius: 10,
+    borderRadius: h("1%"),
     borderWidth: 2,
     alignSelf: "center",
   },
   title: {
-    fontSize: h("3%"),
+    fontSize: h("2.3%"),
   },
 });

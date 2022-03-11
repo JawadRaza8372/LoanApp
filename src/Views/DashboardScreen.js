@@ -11,6 +11,10 @@ const DashboardScreen = ({ navigation }) => {
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
+  const reapplyFun = () => {
+    toggleModal();
+    navigation.navigate("LoanSelectScreen");
+  };
   const ingo = "Get Instant Loans at lowest intreset\nfor all your Emergencies";
   return (
     <SafeScreenTemp bgColor={cardBg}>
@@ -80,7 +84,7 @@ const DashboardScreen = ({ navigation }) => {
               brdrColor={cardBg}
               bgColor={mainColor}
               title="Re-Apply Now"
-              onPressFun={toggleModal}
+              onPressFun={reapplyFun}
             />
           </View>
         </View>
@@ -133,18 +137,20 @@ const styles = StyleSheet.create({
   },
   loanSteps: {
     width: "100%",
-    height: "40%",
+    height: "30%",
     ...justifyEvenly,
     flexDirection: "column",
+    // backgroundColor: "gold",
+    marginBottom: h("13%"),
   },
   text1: {
-    fontSize: h("3%"),
+    fontSize: h("2.2%"),
   },
   text2: {
     fontSize: h("2.5%"),
   },
   bigText: {
-    fontSize: h("7%"),
+    fontSize: h("4%"),
     color: mainColor,
     fontWeight: "700",
   },
@@ -160,8 +166,8 @@ const styles = StyleSheet.create({
     ...allCenter,
   },
   stepImg: {
-    width: "100%",
-    height: "100%",
+    width: "90%",
+    height: "90%",
     resizeMode: "cover",
   },
 });

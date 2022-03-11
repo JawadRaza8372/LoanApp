@@ -3,13 +3,31 @@ import React, { useEffect } from "react";
 import SafeScreenTemp from "../Components/SafeScreenTemp";
 import { allCenter, cardBg, mainColor, screenBg } from "../AppInfo";
 import { w, h } from "react-native-responsiveness";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserStore } from "../store/User";
 const SplashScreen = ({ navigation }) => {
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("jawadRazaLoanApp");
+      if (jsonValue !== null && jsonValue !== undefined && jsonValue !== "") {
+        const parsed = JSON.parse(jsonValue);
+        UserStore.update((s) => {
+          s.user = parsed;
+        });
+        console.log("checking parsed", parsed);
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+  useEffect(() => {
+    getData();
+  }, []);
   useEffect(() => {
     setTimeout(() => {
       navigation.replace("WelcomeScreen");
     }, 3000);
   }, []);
-
   return (
     <SafeScreenTemp bgColor={cardBg}>
       <View style={styles.splashContainer}>

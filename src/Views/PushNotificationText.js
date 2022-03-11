@@ -1,47 +1,125 @@
+import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
-import { Input } from "react-native-elements";
+import { StyleSheet, Text, Button, View, Platform } from "react-native";
+import * as Notification from "expo-notifications";
+import * as Device from "expo-device";
 
-import { Keyboard } from "react-native";
-import { Notifications } from "expo";
-import * as Permissions from "expo-permissions";
-import Constants from "expo-constants";
+Notification.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+    };
+  },
+});
 
-const localNotification = { title: "done", body: "done!" };
-
-const onSubmit = (text) => {
-  Keyboard.dismiss();
-  const schedulingOptions = {
-    time: new Date().getTime() + Number(text),
+export default function App() {
+  const askNotification = async () => {
+    // We need to ask for Notification permissions for ios devices
+    const { status } = await await Notification.requestPermissionsAsync();
+    if (Device.isDevice && status === "granted") {
+      console.log("Notification permissions granted.");
+    } else {
+      alert("Please give Notification permissions");
+    }
   };
-  // Notifications show only when app is not active.
-  // (ie. another app being used or device's screen is locked)
-  Notifications.scheduleLocalNotificationAsync(
-    localNotification,
-    schedulingOptions
-  );
-};
-const handleNotification = () => {
-  console.warn("ok! got your notif");
-};
-
-const askNotification = async () => {
-  // We need to ask for Notification permissions for ios devices
-  const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-  if (Constants.isDevice && status === "granted")
-    console.log("Notification permissions granted.");
-};
-
-const PushNotificationText = () => {
+  //Exectute at the launch of app for ios
   useEffect(() => {
     askNotification();
-    // If we want to do something with the notification when the app
-    // is active, we need to listen to notification events and
-    // handle them in a callback
-    const listener = Notifications.addListener(handleNotification);
-    return () => listener.remove();
   }, []);
 
-  return <Input onChangeText={onSubmit} label="time in ms" />;
-};
+  useEffect(() => {
+    //When app is closed
+    const backgroundSubscription =
+      Notification.addNotificationResponseReceivedListener((response) => {
+        console.log("response");
+      });
+    //When the app is open
+    const foregroundSubscription = Notification.addNotificationReceivedListener(
+      (notification) => {
+        console.log("notification");
+      }
+    );
+    return () => {
+      backgroundSubscription.remove();
+      foregroundSubscription.remove();
+    };
+  }, []);
+  // useEffect(() => {
+  //   triggerNotification();
+  // }, []);
 
-export default PushNotificationText;
+  //=======================================================
+
+  //Trigger Function Called by click of the button to
+  //trigger notification
+
+  //=======================================================
+  const forTimetriggerNotification = () => {
+    console.log("this runed");
+    Notification.scheduleNotificationAsync({
+      content: {
+        title: "sch",
+        body: "Hy",
+        sound: true,
+        android: {
+          icon: "/assets/StepB.png",
+          color: "red",
+        },
+      },
+      trigger: {
+        seconds: 60 * 60,
+        repeats: true,
+      },
+    });
+  };
+  const triggerNotification = () => {
+    Notification.scheduleNotificationAsync({
+      content: {
+        title: "Jawad raza",
+        body: "Hy",
+        sound: true,
+        android: {
+          icon: "/assets/StepB.png",
+          color: "red",
+        },
+      },
+      trigger: {
+        seconds: 1,
+      },
+    });
+  };
+  useEffect(() => {
+    forTimetriggerNotification();
+  }, []);
+
+  // return (
+  //   <View style={styles.container}>
+  //     <Button title="Send Notification" onPress={triggerNotification} />
+  //     {/* <AppLovinMAX.AdView
+  //       adUnitId={"3352795dc514d0d1"}
+  //       adFormat={AppLovinMAX.AdFormat.BANNER}
+  //       style={styles.banner}
+  //     /> */}
+  //     <StatusBar style="auto" />
+  //   </View>
+  // );
+  return null;
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  banner: {
+    // Set background color for banners to be fully functional
+    backgroundColor: "#000000",
+    position: "absolute",
+    width: "100%",
+    height: 50,
+    bottom: Platform.OS === "android" ? 0 : 30,
+  },
+});

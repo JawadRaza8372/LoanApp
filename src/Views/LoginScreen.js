@@ -1,16 +1,22 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import SafeScreenTemp from "../Components/SafeScreenTemp";
 import { cardBg, allCenter } from "../AppInfo";
 import Login from "../Components/Login";
 import OtherAuthButton from "../Components/OtherAuthButton";
-import { KeyboardAvoidingScrollView } from "react-native-keyboard-avoiding-scroll-view";
+import { UserStore } from "../store/User";
 const LoginScreen = ({ navigation }) => {
+  const resp = UserStore.useState();
+  useEffect(() => {
+    if (resp?.user) {
+      navigation.replace("DashboardScreen");
+    }
+  }, [resp]);
   return (
     <SafeScreenTemp bgColor={cardBg}>
-      <KeyboardAvoidingScrollView contentContainerStyle={styles.LoginContainer}>
+      <View style={styles.LoginContainer}>
         <Login
-          submitForm={() => navigation.navigate("DashboardScreen")}
+          submitForm={() => navigation.replace("DashboardScreen")}
           forgotScreen={() => {
             navigation.navigate("ResetPswdScreen");
           }}
@@ -20,7 +26,7 @@ const LoginScreen = ({ navigation }) => {
           title1={"Don't have an account! "}
           title2={"signup"}
         />
-      </KeyboardAvoidingScrollView>
+      </View>
     </SafeScreenTemp>
   );
 };

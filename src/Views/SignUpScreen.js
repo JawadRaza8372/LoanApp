@@ -1,22 +1,28 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import SafeScreenTemp from "../Components/SafeScreenTemp";
 import { cardBg, allCenter } from "../AppInfo";
 import Login from "../Components/Login";
 import SignUp from "../Components/SignUp";
 import OtherAuthButton from "../Components/OtherAuthButton";
-import { KeyboardAvoidingScrollView } from "react-native-keyboard-avoiding-scroll-view";
+import { UserStore } from "../store/User";
 const SignUpScreen = ({ navigation }) => {
+  const resp = UserStore.useState();
+  useEffect(() => {
+    if (resp?.user) {
+      navigation.replace("DashboardScreen");
+    }
+  }, [resp]);
   return (
     <SafeScreenTemp bgColor={cardBg}>
-      <KeyboardAvoidingScrollView contentContainerStyle={styles.LoginContainer}>
-        <SignUp submitForm={() => navigation.navigate("DashboardScreen")} />
+      <View style={styles.LoginContainer}>
+        <SignUp submitForm={() => navigation.replace("DashboardScreen")} />
         <OtherAuthButton
           title1={"already a user! "}
           title2={"login"}
           onPressFunc={() => navigation.replace("LoginScreen")}
         />
-      </KeyboardAvoidingScrollView>
+      </View>
     </SafeScreenTemp>
   );
 };

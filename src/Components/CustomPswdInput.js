@@ -51,7 +51,7 @@ const CustomPswdInput = ({ placeholder, onChange, value, ...otherprops }) => {
       >
         <Octicons
           name={isSequreEntry ? "eye" : "eye-closed"}
-          size={h("4%")}
+          size={h("3%")}
           color={disabeBtnTxt}
         />
       </TouchableOpacity>
@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
   inputfieldStyle: {
     width: "100%",
     height: "100%",
-    paddingHorizontal: 10,
-    fontSize: h("2.6%"),
+    paddingHorizontal: 2,
+    fontSize: h("2.2%"),
   },
   inputContainerView: {
     width: "90%",

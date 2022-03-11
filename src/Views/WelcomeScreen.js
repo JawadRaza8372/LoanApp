@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { w, h } from "react-native-responsiveness";
 import SafeScreenTemp from "../Components/SafeScreenTemp";
 import {
@@ -10,8 +10,15 @@ import {
   screenBg,
 } from "../AppInfo";
 import CustomButton from "../Components/CustomButton";
-
+import { UserStore } from "../store/User";
 const WelcomeScreen = ({ navigation }) => {
+  const resp = UserStore.useState();
+  useEffect(() => {
+    if (resp?.user) {
+      navigation.replace("DashboardScreen");
+    }
+  }, [resp]);
+
   return (
     <SafeScreenTemp bgColor={cardBg}>
       <View style={styles.imagContainer}>
@@ -29,16 +36,16 @@ const WelcomeScreen = ({ navigation }) => {
       <View style={styles.buttonContainer}>
         <View style={styles.butnCont}>
           <CustomButton
-            brdrColor={mainColor}
-            bgColor={"transparent"}
+            brdrColor={cardBg}
+            bgColor={mainColor}
             title="Login"
             onPressFun={() => navigation.navigate("LoginScreen")}
           />
         </View>
         <View style={styles.butnCont}>
           <CustomButton
-            brdrColor={cardBg}
-            bgColor={mainColor}
+            brdrColor={mainColor}
+            bgColor={"transparent"}
             title="Signup"
             onPressFun={() => navigation.navigate("SignUpScreen")}
           />
@@ -55,6 +62,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: h("35%"),
     backgroundColor: mainColor,
+    marginTop: h("1%"),
   },
   mainImg: {
     width: "100%",

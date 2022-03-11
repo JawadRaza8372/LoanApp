@@ -22,11 +22,16 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     ...allCenter,
     flexDirection: "row",
-    overflow: "hidden",
+    // backgroundColor: "red",
+    // overflow: "hidden",
   },
   imgCont: {
-    width: "20%",
-    height: "100%",
+    width: 50,
+    height: 50,
+    // backgroundColor: "red",
+    resizeMode: "contain",
+    alignItems: "center",
+    justifyContent: "center",
   },
   txtCont: {
     width: "80%",
@@ -35,7 +40,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   txtTitle: {
-    fontSize: h("3%"),
+    fontSize: h("2.2%"),
     fontWeight: "bold",
     textTransform: "capitalize",
   },

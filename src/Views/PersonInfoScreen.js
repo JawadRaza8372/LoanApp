@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, TextInput } from "react-native";
 import React, { useState } from "react";
 import SafeScreenTemp from "../Components/SafeScreenTemp";
 import {
+  AlertFunction,
   cardBg,
   allCenter,
   justifyEvenly,
@@ -16,19 +17,23 @@ import ScreenHeader from "../Components/ScreenHeader";
 import { w, h } from "react-native-responsiveness";
 import CustomButton from "../Components/CustomButton";
 import CustomCheckBox from "../Components/CustomCheckBox";
-import { KeyboardAvoidingScrollView } from "react-native-keyboard-avoiding-scroll-view";
+import { LoanStore } from "../store/LoanData";
+
 const PersonInfoScreen = ({ navigation }) => {
   const [education, seteducation] = useState("");
   const [jobStatus, setjobStatus] = useState("");
   const [salry, setsalry] = useState("");
   const [useMoney, setuseMoney] = useState("");
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (
       education !== "" &&
       jobStatus !== "" &&
       salry?.length >= 3 &&
       useMoney?.length >= 6
     ) {
+      await LoanStore.update((s) => {
+        s.data = { ...s.data, education, jobStatus, salry, useMoney };
+      });
       navigation.navigate("CommitmentScreen");
     } else {
       if (
@@ -75,9 +80,7 @@ const PersonInfoScreen = ({ navigation }) => {
           onPressfun={() => navigation.goBack()}
           isBack={true}
         />
-        <KeyboardAvoidingScrollView
-          contentContainerStyle={styles.dashBordContent}
-        >
+        <View style={styles.dashBordContent}>
           <Text style={styles.headingTxt}>
             What is your highest level of Education ?
           </Text>
@@ -149,7 +152,7 @@ const PersonInfoScreen = ({ navigation }) => {
             title="Proceed"
             onPressFun={onSubmit}
           />
-        </KeyboardAvoidingScrollView>
+        </View>
       </View>
     </SafeScreenTemp>
   );
@@ -187,15 +190,15 @@ const styles = StyleSheet.create({
   },
   simpleInput: {
     width: "70%",
-    height: h("6%"),
+    height: h("5%"),
     backgroundColor: inputbg,
     marginBottom: h("1%"),
-    fontSize: h("2.7%"),
+    fontSize: h("2.2%"),
     borderRadius: 5,
     paddingHorizontal: 10,
   },
   kshtxt: {
-    fontSize: h("3%"),
+    fontSize: h("2.5%"),
     color: disabeBtnTxt,
     marginRight: w("2%"),
   },
@@ -205,7 +208,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   inputsmainDiv: {
-    width: "90%",
+    width: "95%",
     ...allCenter,
     flexDirection: "row",
   },

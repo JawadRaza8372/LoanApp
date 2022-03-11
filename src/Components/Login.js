@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import CustomInput from "./CustomInput";
 import { w, h } from "react-native-responsiveness";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   allCenter,
   disabeBtnTxt,
@@ -14,15 +15,43 @@ import {
 import CustomButton from "./CustomButton";
 import CustomPswdInput from "./CustomPswdInput";
 import FormHeading from "./FormHeading";
+import { db } from "../myFirebaseConfig";
 const Login = ({ submitForm, forgotScreen }) => {
   const [loginInfo, setloginInfo] = useState({ email: "", password: "" });
   const buttonBack =
     loginInfo?.email && loginInfo?.password ? mainColor : disableBtnBg;
   const buttontext =
     loginInfo?.email && loginInfo?.password ? cardBg : disabeBtnTxt;
-  const onSubmit = () => {
+  const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem("jawadRazaLoanApp", jsonValue);
+      console.log("done");
+    } catch (e) {
+      // saving error
+      console.log(e);
+    }
+  };
+  const onSubmit = async () => {
     if (loginInfo?.email.length >= 4 && loginInfo?.password.length >= 4) {
-      submitForm();
+      await db
+        .collection("users")
+        .where("email", "==", `${loginInfo?.email}`)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            if (doc.data().password === loginInfo?.password) {
+              storeData({ id: doc.id });
+
+              submitForm();
+            } else {
+              AlertFunction("Auth Error", "Wrong Password");
+            }
+          });
+        })
+        .catch((error) => {
+          console.log("Error getting documents: ", error);
+        });
     } else {
       if (loginInfo?.email.length < 4 && loginInfo?.password.length >= 4) {
         AlertFunction("Auth Error", "Please Enter a valid email.");

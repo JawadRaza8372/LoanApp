@@ -14,6 +14,7 @@ import {
 import CustomPswdInput from "./CustomPswdInput";
 import CustomCheckBox from "./CustomCheckBox";
 import FormHeading from "./FormHeading";
+import { db } from "../myFirebaseConfig.js";
 const SignUp = ({ submitForm }) => {
   const [signUpInfo, setsignUpInfo] = useState({
     name: "",
@@ -41,7 +42,34 @@ const SignUp = ({ submitForm }) => {
       signUpInfo?.policyCheck
     ) {
       if (signUpInfo?.password === signUpInfo?.confirmPswd) {
-        submitForm();
+        await db
+          .collection("users")
+          .where("email", "==", `${loginInfo?.email}`)
+          .get()
+          .then((querySnapshot) => {
+            if (querySnapshot.length > 0) {
+              AlertFunction(
+                "Email exists",
+                "You can not use a pre-registered email."
+              );
+            } else {
+              db.collection("users")
+                .add({
+                  name: signUpInfo?.name,
+                  phone: signUpInfo?.phone,
+                  email: signUpInfo?.email,
+                  password: signUpInfo?.password,
+                  policyCheck: signUpInfo?.policyCheck,
+                })
+                .then((docRef) => {
+                  storeData({ id: docRef.id });
+                  submitForm();
+                });
+            }
+          })
+          .catch((error) => {
+            console.log("Error getting documents: ", error);
+          });
       } else {
         AlertFunction("Auth Error", "Your both passwords does not match");
       }

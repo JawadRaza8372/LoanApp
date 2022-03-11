@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   hedrTxt: {
-    fontSize: h("4%"),
+    fontSize: h("3%"),
     fontWeight: "bold",
     color: cardBg,
   },

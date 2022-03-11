@@ -12,12 +12,16 @@ import {
   screenBg,
 } from "../AppInfo";
 import CustomCheckBox from "../Components/CustomCheckBox";
+import { LoanStore } from "../store/LoanData";
 const LoanSelectScreen = ({ navigation }) => {
   const [loanType, setloanType] = useState("");
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (loanType === "") {
       AlertFunction("Selection Error", "Please select a loan type.");
     } else {
+      await LoanStore.update((s) => {
+        s.data = { loanType };
+      });
       navigation.navigate("PhoneInfoScreen");
     }
   };

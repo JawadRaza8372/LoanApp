@@ -14,13 +14,17 @@ import ScreenHeader from "../Components/ScreenHeader";
 import { w, h } from "react-native-responsiveness";
 import CustomButton from "../Components/CustomButton";
 import CustomCheckBox from "../Components/CustomCheckBox";
+import { LoanStore } from "../store/LoanData";
 const PhoneInfoScreen = ({ navigation }) => {
   const [ownerShip, setownerShip] = useState("");
   const [phoneCateg, setphoneCateg] = useState("");
   const [ownerShipTime, setownerShipTime] = useState("");
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (ownerShip !== "" && phoneCateg !== "" && ownerShipTime !== "") {
+      await LoanStore.update((s) => {
+        s.data = { ...s.data, ownerShip, phoneCateg, ownerShipTime };
+      });
       navigation.navigate("PersonInfoScreen");
     } else {
       if (ownerShip === "" && phoneCateg !== "" && ownerShipTime !== "") {
@@ -68,7 +72,7 @@ const PhoneInfoScreen = ({ navigation }) => {
               ownerShip === "No , Someone's else phone." ? true : false
             }
             title="No , Someone's else phone."
-            onPressFun={() => setownerShip("No , Someone's else phone")}
+            onPressFun={() => setownerShip("No , Someone's else phone.")}
             isCircle={true}
           />
 

@@ -23,12 +23,13 @@ const styles = StyleSheet.create({
     marginTop: h("3%"),
   },
   othertxt: {
-    fontSize: h("2.6%"),
-    fontWeight: "700",
+    fontSize: h("2.2%"),
+
     textTransform: "capitalize",
   },
   spcltxt: {
     color: mainColor,
     textTransform: "uppercase",
+    fontWeight: "bold",
   },
 });
