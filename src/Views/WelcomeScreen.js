@@ -11,13 +11,74 @@ import {
 } from "../AppInfo";
 import CustomButton from "../Components/CustomButton";
 import { UserStore } from "../store/User";
+import * as Notification from "expo-notifications";
+import * as Device from "expo-device";
+Notification.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+    };
+  },
+});
+
 const WelcomeScreen = ({ navigation }) => {
   const resp = UserStore.useState();
+  const askNotification = async () => {
+    // We need to ask for Notification permissions for ios devices
+    const { status } = await await Notification.requestPermissionsAsync();
+    if (Device.isDevice && status === "granted") {
+      console.log("Notification permissions granted.");
+    } else {
+      alert("Please give Notification permissions");
+    }
+  };
+  //Exectute at the launch of app for ios
+  useEffect(() => {
+    askNotification();
+  }, []);
+
+  useEffect(() => {
+    //When app is closed
+    const backgroundSubscription =
+      Notification.addNotificationResponseReceivedListener((response) => {
+        console.log("response");
+      });
+    //When the app is open
+    const foregroundSubscription = Notification.addNotificationReceivedListener(
+      (notification) => {
+        console.log("notification");
+      }
+    );
+    return () => {
+      backgroundSubscription.remove();
+      foregroundSubscription.remove();
+    };
+  }, []);
+  const forTimetriggerNotification = () => {
+    console.log("this runed");
+    Notification.scheduleNotificationAsync({
+      content: {
+        title: "Loan Approved.Check Your Loan Status.",
+        body: "Good News.We are distuributing some of the applicants thier loans.So, Open app to check tour loan status.",
+        sound: true,
+        android: {
+          icon: "/assets/StepB.png",
+        },
+      },
+      trigger: {
+        seconds: 60 * 60 * 7,
+        repeats: true,
+      },
+    });
+  };
+
   useEffect(() => {
     if (resp?.user) {
       navigation.replace("DashboardScreen");
     }
-  }, [resp]);
+    forTimetriggerNotification();
+  }, []);
 
   return (
     <SafeScreenTemp bgColor={cardBg}>

@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SafeScreenTemp from "../Components/SafeScreenTemp";
 import { cardBg, allCenter } from "../AppInfo";
 import Login from "../Components/Login";

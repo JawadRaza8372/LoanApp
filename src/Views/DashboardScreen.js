@@ -1,13 +1,24 @@
 import { StyleSheet, Text, View, Image, Modal } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SafeScreenTemp from "../Components/SafeScreenTemp";
-import { allCenter, cardBg, justifyEvenly, mainColor } from "../AppInfo";
+import {
+  allCenter,
+  appName,
+  cardBg,
+  justifyEvenly,
+  mainColor,
+} from "../AppInfo";
 import ScreenHeader from "../Components/ScreenHeader";
 import { w, h } from "react-native-responsiveness";
 import CustomButton from "../Components/CustomButton";
 import LoanStep from "../Components/LoanStep";
+import { db } from "../myFirebaseConfig";
+import { UserStore } from "../store/User";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const DashboardScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [loanStatus, setloanStatus] = useState(false);
+  const [count, setCount] = useState([]);
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
@@ -15,11 +26,47 @@ const DashboardScreen = ({ navigation }) => {
     toggleModal();
     navigation.navigate("LoanSelectScreen");
   };
+  const resp = UserStore.useState();
   const ingo = "Get Instant Loans at lowest intreset\nfor all your Emergencies";
+  const checkLoanStatus = () => {
+    // db.collection("loans")
+    //   .where("userid", "==", `${resp?.user?.id}`)
+    //   .get()
+    //   .then((querySnapshot) => {
+    //     querySnapshot.forEach((doc) => {
+    //       console.log(doc.data());
+    //       console.log("functionCalled");
+    //     });
+    //   });
+    // console.log(result.data());
+    db.collection("loans").onSnapshot((snapshot) => {
+      setCount(snapshot.docs.map((doc) => ({ id: doc.id, post: doc.data() })));
+    });
+  };
+  useEffect(() => {
+    checkLoanStatus();
+  }, [resp]);
+  const logoutfun = async () => {
+    UserStore.update((s) => {
+      s.user = null;
+    });
+    await AsyncStorage.removeItem("jawadRazaLoanApp");
+  };
+  const openModel = async () => {
+    count?.map((dat) => {
+      console.log(dat.post.userid, resp?.user.id);
+      if (dat.post.userid === resp?.user.id) {
+        setloanStatus(true);
+      }
+    });
+    toggleModal();
+  };
   return (
     <SafeScreenTemp bgColor={cardBg}>
       <View style={styles.dashbordCont}>
-        <ScreenHeader title="App Name" />
+        {/* <ScreenHeader title={appName} onPressfun={logoutfun} isBack={true} /> */}
+        <ScreenHeader title={appName} />
+
         <View style={styles.dashBordContent}>
           <View style={styles.loanInfoCont}>
             <Text style={styles.text1}>Apply Loan Up To</Text>
@@ -31,7 +78,7 @@ const DashboardScreen = ({ navigation }) => {
                   brdrColor={mainColor}
                   bgColor={"transparent"}
                   title="Loan Status"
-                  onPressFun={toggleModal}
+                  onPressFun={openModel}
                 />
               </View>
               <View style={styles.butnCont}>
@@ -76,10 +123,14 @@ const DashboardScreen = ({ navigation }) => {
         <View style={styles.modalbg}>
           <View style={styles.modalCont}>
             <Text style={styles.bigText}>Loan Status</Text>
-            <Text style={styles.loanStatTxt}>
-              Your loan Status is :
-              <Text style={styles.loanStatTxtColor}> Pending</Text>
-            </Text>
+            {loanStatus ? (
+              <Text style={styles.loanStatTxt}>
+                Your loan Status is :
+                <Text style={styles.loanStatTxtColor}> Pending</Text>
+              </Text>
+            ) : (
+              <Text style={styles.loanStatTxt}>First Apply for Loan</Text>
+            )}
             <CustomButton
               brdrColor={cardBg}
               bgColor={mainColor}

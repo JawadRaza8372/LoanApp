@@ -16,6 +16,7 @@ import CustomButton from "./CustomButton";
 import CustomPswdInput from "./CustomPswdInput";
 import FormHeading from "./FormHeading";
 import { db } from "../myFirebaseConfig";
+import { UserStore } from "../store/User";
 const Login = ({ submitForm, forgotScreen }) => {
   const [loginInfo, setloginInfo] = useState({ email: "", password: "" });
   const buttonBack =
@@ -42,7 +43,9 @@ const Login = ({ submitForm, forgotScreen }) => {
           querySnapshot.forEach((doc) => {
             if (doc.data().password === loginInfo?.password) {
               storeData({ id: doc.id });
-
+              UserStore.update((s) => {
+                s.user = { id: doc.id };
+              });
               submitForm();
             } else {
               AlertFunction("Auth Error", "Wrong Password");

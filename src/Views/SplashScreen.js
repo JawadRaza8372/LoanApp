@@ -1,7 +1,16 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect } from "react";
 import SafeScreenTemp from "../Components/SafeScreenTemp";
-import { allCenter, cardBg, mainColor, screenBg } from "../AppInfo";
+import {
+  allCenter,
+  appName,
+  apptagline1,
+  apptagline2,
+  apptagline3,
+  cardBg,
+  mainColor,
+  screenBg,
+} from "../AppInfo";
 import { w, h } from "react-native-responsiveness";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserStore } from "../store/User";
@@ -32,9 +41,10 @@ const SplashScreen = ({ navigation }) => {
     <SafeScreenTemp bgColor={cardBg}>
       <View style={styles.splashContainer}>
         <View style={styles.imageContainer} />
-        <Text style={styles.appTitle}>App Logo</Text>
+        <Text style={styles.appTitle}>{appName}</Text>
         <Text style={styles.appSubtitle}>
-          We <Text style={styles.colorText}>don't </Text>check CBR
+          {apptagline1} <Text style={styles.colorText}>{apptagline2}</Text>
+          {apptagline3}
         </Text>
       </View>
     </SafeScreenTemp>

@@ -70,6 +70,11 @@ const AlertFunction = (title, description) => {
     },
   ]);
 };
+const appName = "App Name";
+const apptagline1 = "We ";
+const apptagline2 = "don't ";
+const apptagline3 = "check cbr";
+
 export {
   alignEnd,
   mainColor,
@@ -90,4 +95,8 @@ export {
   justifyStart,
   inputbg,
   AlertFunction,
+  appName,
+  apptagline1,
+  apptagline2,
+  apptagline3,
 };

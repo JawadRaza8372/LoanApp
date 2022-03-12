@@ -12,13 +12,15 @@ import {
   allCenter,
   alignStart,
   inputbg,
+  screenBg,
 } from "../AppInfo";
 import { w, h } from "react-native-responsiveness";
 import { LoanStore } from "../store/LoanData";
 import { db } from "../myFirebaseConfig";
 import CustomButton from "../Components/CustomButton";
 import { UserStore } from "../store/User";
-const CommitmentScreen = () => {
+import { AlertFunction } from "../AppInfo";
+const CommitmentScreen = ({ navigation }) => {
   const [mpayMsg, setmpayMsg] = useState("");
   const resp = LoanStore.useState();
   const repUser = UserStore.useState();
@@ -38,10 +40,16 @@ const CommitmentScreen = () => {
             "Loan Apply Attempt Status",
             "Your Loan Apply Attempt has been completed."
           );
+          navigation.goBack();
+          navigation.goBack();
+          navigation.goBack();
+          navigation.goBack();
         });
     }
   };
-
+  // M-pesa Paybill; 522522
+  // Account No; 1237309689
+  // Charge fee; ksh 88
   return (
     <SafeScreenTemp bgColor={cardBg}>
       <View style={styles.dashbordCont}>
@@ -58,30 +66,26 @@ const CommitmentScreen = () => {
             <Text style={styles.miniTexts}>
               Our company is committed to serving our customers based on trust
               and loyalty. For that reason, it requires you to pay a customer
-              commitment fee of Kshs.133 to
+              commitment fee of ksh88.
             </Text>
-            <Text style={styles.miniTexts}>Till number</Text>
-            <Text style={styles.miniTexts}>Till name</Text>
           </View>
 
           <View style={styles.textContainers}>
             <Text style={styles.headingTxt}>Procedure:</Text>
-            <Text style={styles.miniTexts}>1. Go to Mpesa</Text>
-            <Text style={styles.miniTexts}>2. Buy Goods and Services</Text>
-            <Text style={styles.miniTexts}>3. Enter till number :</Text>
-            <Text style={styles.miniTexts}>4. Enter Amount:</Text>
-            <Text style={styles.miniTexts}>5. Enter pin. </Text>
+            <Text style={styles.miniTexts}>1. Go to Mpesa > Paybill</Text>
+            <Text style={styles.miniTexts}>2. Enter Business No: 522522</Text>
             <Text style={styles.miniTexts}>
-              6. Wait for confirmation message.
+              3. Enter Account No: 1237309689
             </Text>
+            <Text style={styles.miniTexts}>4. Enter pin. </Text>
             <Text style={styles.miniTexts}>
-              Your commitment will be refunded once your loan Is processed
-              successfully.
+              5. Wait for confirmation message.
             </Text>
           </View>
 
           <Text style={{ ...styles.headingTxt, textAlign: "center" }}>
-            Enter your confirmation message in the box below.
+            Your commitment will be refunded once your loan Is processed
+            successfully. Enter your confirmation message in the box below.
           </Text>
 
           <TextInput
@@ -129,17 +133,17 @@ const styles = StyleSheet.create({
     marginLeft: h("4%"),
   },
   imgContiani: {
-    width: "80%",
-    height: h("20%"),
+    width: "60%",
+    height: h("22%"),
     alignSelf: "center",
-    backgroundColor: mainColor,
+    backgroundColor: cardBg,
     borderRadius: 20,
     overflow: "hidden",
   },
   imageShow: {
     width: "100%",
     height: "100%",
-    resizeMode: "cover",
+    resizeMode: "contain",
   },
   simpleInput: {
     width: "90%",

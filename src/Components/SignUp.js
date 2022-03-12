@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import CustomInput from "./CustomInput";
 import CustomButton from "./CustomButton";
 import { w, h } from "react-native-responsiveness";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   allCenter,
   disabeBtnTxt,
@@ -24,6 +25,7 @@ const SignUp = ({ submitForm }) => {
     confirmPswd: "",
     policyCheck: false,
   });
+  const [count, setcount] = useState(1);
   const buttonBack =
     signUpInfo?.name && signUpInfo?.phone && signUpInfo?.password
       ? mainColor
@@ -32,7 +34,17 @@ const SignUp = ({ submitForm }) => {
     signUpInfo?.name && signUpInfo?.phone && signUpInfo?.password
       ? cardBg
       : disabeBtnTxt;
-  const onSubmit = () => {
+  const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem("jawadRazaLoanApp", jsonValue);
+      console.log("done");
+    } catch (e) {
+      // saving error
+      console.log(e);
+    }
+  };
+  const onSubmit = async () => {
     if (
       signUpInfo?.name.length >= 4 &&
       signUpInfo?.phone.length >= 4 &&
@@ -44,7 +56,7 @@ const SignUp = ({ submitForm }) => {
       if (signUpInfo?.password === signUpInfo?.confirmPswd) {
         await db
           .collection("users")
-          .where("email", "==", `${loginInfo?.email}`)
+          .where("email", "==", `${signUpInfo?.email}`)
           .get()
           .then((querySnapshot) => {
             if (querySnapshot.length > 0) {
@@ -62,6 +74,9 @@ const SignUp = ({ submitForm }) => {
                   policyCheck: signUpInfo?.policyCheck,
                 })
                 .then((docRef) => {
+                  UserStore.update((s) => {
+                    s.user = { id: doc.id };
+                  });
                   storeData({ id: docRef.id });
                   submitForm();
                 });
