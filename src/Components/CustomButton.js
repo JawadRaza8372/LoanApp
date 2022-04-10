@@ -1,19 +1,38 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
+import React, { useState, useEffect } from "react";
 import { allCenter } from "../AppInfo";
 import { w, h } from "react-native-responsiveness";
+import InertialAdComp from "./InertialAdComp";
 const CustomButton = ({ brdrColor, bgColor, title, onPressFun }) => {
+  const [isLoadinCheck, setisLoadinCheck] = useState(false);
+  const onClickFun = async () => {
+    setisLoadinCheck(true);
+    await onPressFun();
+    setisLoadinCheck(false);
+  };
   return (
-    <TouchableOpacity
-      style={{
-        ...styles.button,
-        backgroundColor: bgColor,
-        borderColor: brdrColor,
-      }}
-      onPress={onPressFun}
-    >
-      <Text style={{ ...styles.title, color: brdrColor }}>{title}</Text>
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity
+        style={{
+          ...styles.button,
+          backgroundColor: bgColor,
+          borderColor: brdrColor,
+        }}
+        onPress={onClickFun}
+      >
+        {isLoadinCheck ? (
+          <ActivityIndicator size={"small"} color={brdrColor} />
+        ) : (
+          <Text style={{ ...styles.title, color: brdrColor }}>{title}</Text>
+        )}
+      </TouchableOpacity>
+    </>
   );
 };
 

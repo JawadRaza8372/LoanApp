@@ -5,6 +5,7 @@ import { cardBg, allCenter } from "../AppInfo";
 import Login from "../Components/Login";
 import OtherAuthButton from "../Components/OtherAuthButton";
 import { UserStore } from "../store/User";
+import BannerAdComp from "../Components/BannerAdComp";
 const LoginScreen = ({ navigation }) => {
   const resp = UserStore.useState();
   useEffect(() => {
@@ -26,6 +27,7 @@ const LoginScreen = ({ navigation }) => {
           title1={"Don't have an account! "}
           title2={"signup"}
         />
+        <BannerAdComp />
       </View>
     </SafeScreenTemp>
   );

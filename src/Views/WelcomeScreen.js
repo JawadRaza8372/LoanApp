@@ -13,6 +13,8 @@ import CustomButton from "../Components/CustomButton";
 import { UserStore } from "../store/User";
 import * as Notification from "expo-notifications";
 import * as Device from "expo-device";
+import BannerAdComp from "../Components/BannerAdComp";
+import InertialAdComp from "../Components/InertialAdComp";
 Notification.setNotificationHandler({
   handleNotification: async () => {
     return {
@@ -112,6 +114,7 @@ const WelcomeScreen = ({ navigation }) => {
           />
         </View>
       </View>
+      <BannerAdComp />
     </SafeScreenTemp>
   );
 };

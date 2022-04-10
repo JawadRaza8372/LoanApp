@@ -13,6 +13,7 @@ import {
   alignStart,
   inputbg,
   screenBg,
+  appName,
 } from "../AppInfo";
 import { w, h } from "react-native-responsiveness";
 import { LoanStore } from "../store/LoanData";
@@ -64,15 +65,15 @@ const CommitmentScreen = ({ navigation }) => {
           <View style={styles.textContainers}>
             <Text style={styles.headingTxt}>Dear Customer!</Text>
             <Text style={styles.miniTexts}>
-              Our company is committed to serving our customers based on trust
-              and loyalty. For that reason, it requires you to pay a customer
-              commitment fee of ksh88.
+              Our company {appName} is committed to serving our customers based
+              on trust and loyalty. For that reason, it requires you to pay a
+              customer commitment fee of ksh88.
             </Text>
           </View>
 
           <View style={styles.textContainers}>
             <Text style={styles.headingTxt}>Procedure:</Text>
-            <Text style={styles.miniTexts}>1. Go to Mpesa > Paybill</Text>
+            <Text style={styles.miniTexts}>1. Go to Mpesa {" =>"} Paybill</Text>
             <Text style={styles.miniTexts}>2. Enter Business No: 522522</Text>
             <Text style={styles.miniTexts}>
               3. Enter Account No: 1237309689

@@ -15,6 +15,7 @@ import LoanStep from "../Components/LoanStep";
 import { db } from "../myFirebaseConfig";
 import { UserStore } from "../store/User";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import BannerAdComp from "../Components/BannerAdComp";
 const DashboardScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [loanStatus, setloanStatus] = useState(false);
@@ -40,7 +41,7 @@ const DashboardScreen = ({ navigation }) => {
     //   });
     // console.log(result.data());
     db.collection("loans").onSnapshot((snapshot) => {
-      setCount(snapshot.docs.map((doc) => ({ id: doc.id, post: doc.data() })));
+      setCount(snapshot?.docs.map((doc) => ({ id: doc.id, post: doc.data() })));
     });
   };
   useEffect(() => {
@@ -112,6 +113,7 @@ const DashboardScreen = ({ navigation }) => {
               />
             </LoanStep>
           </View>
+          <BannerAdComp />
         </View>
       </View>
       <Modal
@@ -182,13 +184,13 @@ const styles = StyleSheet.create({
   },
   loanInfoCont: {
     width: "100%",
-    height: "60%",
+    height: "40%",
     ...justifyEvenly,
     flexDirection: "column",
   },
   loanSteps: {
     width: "100%",
-    height: "30%",
+    height: "40%",
     ...justifyEvenly,
     flexDirection: "column",
     // backgroundColor: "gold",

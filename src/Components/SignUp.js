@@ -16,6 +16,7 @@ import CustomPswdInput from "./CustomPswdInput";
 import CustomCheckBox from "./CustomCheckBox";
 import FormHeading from "./FormHeading";
 import { db } from "../myFirebaseConfig.js";
+import { UserStore } from "../store/User";
 const SignUp = ({ submitForm }) => {
   const [signUpInfo, setsignUpInfo] = useState({
     name: "",
@@ -75,7 +76,7 @@ const SignUp = ({ submitForm }) => {
                 })
                 .then((docRef) => {
                   UserStore.update((s) => {
-                    s.user = { id: doc.id };
+                    s.user = { id: docRef.id };
                   });
                   storeData({ id: docRef.id });
                   submitForm();

@@ -70,7 +70,7 @@ const AlertFunction = (title, description) => {
     },
   ]);
 };
-const appName = "App Name";
+const appName = "Azimo";
 const apptagline1 = "We ";
 const apptagline2 = "don't ";
 const apptagline3 = "check cbr";

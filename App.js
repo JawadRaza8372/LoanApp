@@ -22,6 +22,7 @@ import PushNotificationText from "./src/Views/PushNotificationText";
 import * as FacebookAds from "expo-ads-facebook";
 import { useEffect, useState } from "react";
 import { isLogin, UserStore } from "./src/store/User";
+import InertialAdComp from "./src/Components/InertialAdComp";
 
 export default function App() {
   let [isLoaded, setIsLoaded] = useState(false);
@@ -61,6 +62,18 @@ export default function App() {
   //   setModalVisible(!modalVisible);
   //   showInterstitial();
   // };
+  useEffect(() => {
+    setTimeout(() => {
+      if (modalVisible) {
+        setModalVisible(false);
+      }
+    }, 2000);
+    setTimeout(() => {
+      if (!modalVisible) {
+        setModalVisible(true);
+      }
+    }, 120000);
+  }, [modalVisible]);
 
   return (
     <>
@@ -91,6 +104,8 @@ export default function App() {
         <StatusBar style="auto" />
       </View> */}
       <LoanAppNavigation />
+      {modalVisible && <InertialAdComp />}
+      {/* <DashboardScreen /> */}
     </>
   );
 }

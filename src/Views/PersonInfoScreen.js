@@ -136,6 +136,7 @@ const PersonInfoScreen = ({ navigation }) => {
               style={styles.simpleInput}
               value={salry}
               onChangeText={(text) => setsalry(text)}
+              keyboardType="number-pad"
             />
           </View>
           <Text style={styles.headingTxt}>How will you use this loan??</Text>

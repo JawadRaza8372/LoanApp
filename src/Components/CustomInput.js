@@ -42,6 +42,7 @@ const CustomInput = ({ icon, placeholder, onChange, value, ...otherprops }) => {
             ...styles.inputfieldStyle,
             color: isFocus || value ? mainColor : disabeBtnTxt,
           }}
+          autoComplete="off"
         />
       </View>
     </View>
